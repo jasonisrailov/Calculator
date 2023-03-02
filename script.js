@@ -1,24 +1,52 @@
-class Calculator 
-{
-    constructor(previousOperandTextElement, currentOperandTextElement)
-    {
+class Calculator {
+    constructor(previousOperandTextElement, currentOperandTextElement) {
         this.previousOperandTextElement = previousOperandTextElement;
         this.currentOperandTextElement = currentOperandTextElement;
+        this.clear();
     }
-    
-    // functions to add
 
-    // clearing
-    // adding
-    // delete
+    clear() {
+        this.currentOperand = '';
+        this.previousOperand = '';
+        this.operation = undefined;
+    }
+
+    delete() {
+        // function to add
+    }
+
+    appendNumber(number) {
+        this.currentOperand = number;
+    }
+
+    chooseOperation(operation) {
+        // function to add
+    }
+
+    compute() {
+        // function to add
+    }
+
+    updateDisplay() {
+        this.currentOperandTextElement.innerText = this.currentOperand;
+    }
+
 }
 
 
 const numberButtons = document.querySelectorAll('[data-number]');
 const operationButtons = document.querySelectorAll('[data-operation]');
-const equalButton = document.querySelecton('[data-equals]');
-const deleteButton = document.querySelecton('[data-delete]');
-const allClearButton = document.querySelecton('[data-all-clear]');
-const previousOperandTextElement = document.querySelecton('[data-previous-operand]');
-const currentOperandTextElement = document.querySelecton('[data-current-operand]');
+const equalsButton = document.querySelector('[data-equals]');
+const deleteButton = document.querySelector('[data-delete]');
+const allClearButton = document.querySelector('[data-all-clear]');
+const previousOperandTextElement = document.querySelector('[data-previous-operand]');
+const currentOperandTextElement = document.querySelector('[data-current-operand]');
 
+const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.appendNumber(button.innerText);
+        calculator.updateDisplay();
+    })
+})
