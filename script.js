@@ -16,11 +16,26 @@ class Calculator {
     }
 
     appendNumber(number) {
-        this.currentOperand = number;
+        // constraint to check if the . is already in the number string
+        if(number === '.' && this.currentOperand.includes('.')) {
+            return;
+        }
+        this.currentOperand = this.currentOperand.toString() + number.toString();
     }
 
     chooseOperation(operation) {
-        // function to add
+        // does not allow an operation to clear if there is no current value
+        if(this.currentOperand === '') {
+            return
+        }
+        // constraight to do the computation if theres a prev and curr operand
+        if(this.previousOperand !== '.') {
+            this.compute();
+        }
+        // moving current operand to the top line when after selecting an operation. 
+        this.operation = operation;
+        this.previousOperand = this.currentOperand;
+        this.currentOperand = '';
     }
 
     compute() {
@@ -29,6 +44,7 @@ class Calculator {
 
     updateDisplay() {
         this.currentOperandTextElement.innerText = this.currentOperand;
+        this.previousOperandTextElement.innerText = this.previousOperand;
     }
 
 }
@@ -45,6 +61,13 @@ const currentOperandTextElement = document.querySelector('[data-current-operand]
 const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
 
 numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.appendNumber(button.innerText);
+        calculator.updateDisplay();
+    })
+})
+
+operationButtons.forEach(button => {
     button.addEventListener('click', () => {
         calculator.appendNumber(button.innerText);
         calculator.updateDisplay();
