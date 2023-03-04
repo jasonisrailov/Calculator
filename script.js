@@ -26,10 +26,10 @@ class Calculator {
     chooseOperation(operation) {
         // does not allow an operation to clear if there is no current value
         if(this.currentOperand === '') {
-            return
+            return;
         }
         // constraight to do the computation if theres a prev and curr operand
-        if(this.previousOperand !== '.') {
+        if(this.previousOperand !== '') {
             this.compute();
         }
         // moving current operand to the top line when after selecting an operation. 
@@ -39,7 +39,34 @@ class Calculator {
     }
 
     compute() {
-        // function to add
+        let computation;
+        const prev = parseFloat(this.previousOperand);
+        const current = parseFloat(this.currentOperand);
+        
+        // does not allow code to run if input is empty
+        if(NaN(prev) || isNaN(current)) {
+            return;
+        }
+        switch(this.operation) {
+            case '+': 
+                computation = prev + current;
+                break;
+            case '-':
+                computation = prev - current;
+                break;
+            case '*':
+                computation = prev * current;
+                break;
+            case '÷':
+                computation = prev / current;
+                break;
+            // if invalid comptutation - none of the symbols match
+            default: 
+                return;
+        }
+        this.currentOperand = computation;
+        this.operation = undefined;
+        this.previousOperand = '';
     }
 
     updateDisplay() {
@@ -72,4 +99,14 @@ operationButtons.forEach(button => {
         calculator.appendNumber(button.innerText);
         calculator.updateDisplay();
     })
+})
+
+equalsButton.addEventListener('click', button => {
+    calculator.compute();
+    calculator.updateDisplay();
+})
+
+allClearButton.addEventListener('click', button => {
+    calculator.clear();
+    calculator.updateDisplay();
 })
