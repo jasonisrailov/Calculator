@@ -12,7 +12,7 @@ class Calculator {
     }
 
     delete() {
-        // function to add
+        this.currentOperand = this.currentOperand.toString().slice(0, -1);
     }
 
     appendNumber(number) {
@@ -69,9 +69,16 @@ class Calculator {
         this.previousOperand = '';
     }
 
+    getDisplayNumber(number) {
+        return number;
+    }
+
     updateDisplay() {
-        this.currentOperandTextElement.innerText = this.currentOperand;
-        this.previousOperandTextElement.innerText = this.previousOperand;
+        this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand);
+        if(this.operation != null) {
+            this.previousOperandTextElement.innerText = 
+            `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
+        }
     }
 
 }
@@ -96,7 +103,7 @@ numberButtons.forEach(button => {
 
 operationButtons.forEach(button => {
     button.addEventListener('click', () => {
-        calculator.appendNumber(button.innerText);
+        calculator.chooseOperation(button.innerText);
         calculator.updateDisplay();
     })
 })
@@ -108,5 +115,10 @@ equalsButton.addEventListener('click', button => {
 
 allClearButton.addEventListener('click', button => {
     calculator.clear();
+    calculator.updateDisplay();
+})
+
+deleteButton.addEventListener('click', button => {
+    calculator.delete();
     calculator.updateDisplay();
 })
