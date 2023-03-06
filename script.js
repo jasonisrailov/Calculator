@@ -44,7 +44,7 @@ class Calculator {
         const current = parseFloat(this.currentOperand);
         
         // does not allow code to run if input is empty
-        if(NaN(prev) || isNaN(current)) {
+        if(isNaN(prev) || isNaN(current)) {
             return;
         }
         switch(this.operation) {
@@ -70,7 +70,27 @@ class Calculator {
     }
 
     getDisplayNumber(number) {
-        return number;
+        const stringNumber = number.toString();
+        // takes str and splits it to an array of two parts: before and after decimal place
+        // only takes the integers before the decimal place
+        const integerDigits = parseFloat(stringNumber.split('.')[0]);
+        // only takes the integer after the decimal place
+        const decimalDigits = stringNumber.split('.')[1];
+        let integerDisplay;
+        // if input is empty or just a decimal
+        if(isNaN(integerDigits)) {
+            integerDisplay = '';
+        }
+        else {
+            integerDisplay = integerDigits.toLocaleString('en', {maximumFractionDigits: 0});
+        }
+        
+        if(decimalDigits != null) {
+            return `${integerDisplay}.${decimalDigits}`;
+        }
+        else {
+            return integerDisplay;
+        }
     }
 
     updateDisplay() {
@@ -78,6 +98,9 @@ class Calculator {
         if(this.operation != null) {
             this.previousOperandTextElement.innerText = 
             `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
+        }
+        else {
+            this.previousOperandTextElement.innerText = '';
         }
     }
 
